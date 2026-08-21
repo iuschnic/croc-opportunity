@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16
+    container_name: opportunities-db
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: opportunities
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d opportunities"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: opportunities-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__PostgresConnection: "Host=db;Port=5432;Database=opportunities;Username=app;Password=app"
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
