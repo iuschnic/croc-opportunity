@@ -80,7 +80,7 @@ public class Opportunity
     {
         if (Status != OpportunityStatus.Lost)
             throw new DomainRuleViolationException("Status should be Lost in order to change Loss Reason");
-        CheckLossReasonMatchesStatus(OpportunityStatus.Lost, newLossReason);
+        CheckLossReasonMatchesStatus(Status, newLossReason);
         LossReason = newLossReason;
     }
 

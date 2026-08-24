@@ -21,11 +21,6 @@ public readonly record struct Money
     {
         return new Money(0, currency);
     }
-    
-    public Money Zero()
-    {
-        return new Money(0, Currency);
-    }
 
     public Money Add(decimal amount)
     {
